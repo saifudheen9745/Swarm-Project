@@ -41,25 +41,5 @@ const userRegSchema = new mongoose.Schema({
 
 
 
-const googleSchema = new mongoose.Schema({
-    fname: {
-        type: String,
-        required:true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true,
-        validate: [validator.isEmail, "Invalid Email"],
-    },
-    isVerified:{
-        type:Boolean,
-        default:true
-    }
-})
-
 
 export const userRegisterSchema =  mongoose.model('users',userRegSchema,'users')
-export const userGoogleSchema = mongoose.model('userGoogleReg',googleSchema,'users')
