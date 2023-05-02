@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 const NewProject = lazy(() =>
   import("../Components/NewProjectComponent/NewProject")
 );
-import LogoLoader from "../Components/Loaders/logoLoader";
+import LogoLoader from "../Components/Loaders/LogoLoader";
 import ErrorBoundary from "../Components/ErrorBoundaries/ErrorBoundary";
 import ViewProjectPage from "../Pages/User/ViewProjectPage";
 

@@ -6,7 +6,7 @@ const WorkspacePage = lazy(() =>
   import("../Pages/User/WorkspacePage")
 );
 import { Route, Routes } from "react-router-dom";
-import LogoLoader from "../Components/Loaders/logoLoader";
+import LogoLoader from "../Components/Loaders/LogoLoader";
 import ErrorBoundary from "../Components/ErrorBoundaries/ErrorBoundary";
 
 
