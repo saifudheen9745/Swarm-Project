@@ -1,0 +1,1 @@
+{"version":3,"file":"otpAuth.js","sourceRoot":"","sources":["../../../src/Models/UserModels/otpAuth.ts"],"names":[],"mappings":";;AAAA,uCAAkC;AAElC,MAAM,OAAO,GAAG,IAAI,iBAAM,CAAC;IACvB,GAAG,EAAC;QACA,IAAI,EAAC,MAAM;KACd;IACD,KAAK,EAAC;QACF,IAAI,EAAC,MAAM;KACd;CACJ,CAAC,CAAC;AAOH,kBAAe,OAAO,CAAC"}

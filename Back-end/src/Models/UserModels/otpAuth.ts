@@ -9,4 +9,9 @@ const otpAuth = new Schema({
     }
 });
 
+interface otpAuth{
+    otp:string;
+    email:string;
+}
+
 export default otpAuth;

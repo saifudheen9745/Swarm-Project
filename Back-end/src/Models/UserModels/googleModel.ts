@@ -20,5 +20,10 @@ const googleSchema = new mongoose.Schema({
     }
 })
 
+interface googleTypes {
+    fname:string,
+    email:string,
+    isVerified:Boolean
+}
 
-export default mongoose.model('userGoogleReg',googleSchema,'users')
+export default mongoose.model<googleTypes>('userGoogleReg',googleSchema,'users')
