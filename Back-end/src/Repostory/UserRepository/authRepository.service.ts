@@ -1,7 +1,6 @@
 import { Types } from "mongoose";
 import {
   userGoogleSchema,
-  userOtpSchema,
   userRegisterSchema,
 } from "../../Models/UserModels/authModel";
 import {
@@ -12,6 +11,7 @@ import {
   userRegInterface,
 } from "../../Types/user.types";
 import { compare } from "bcrypt";
+import { userOtpSchema } from "../../Models/UserModels/otpModel";
 
 export class authRepository {
   async registerUser(regDetails: userRegInterface) {

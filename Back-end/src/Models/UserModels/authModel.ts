@@ -39,15 +39,7 @@ const userRegSchema = new mongoose.Schema({
     }
 });
 
-const otpAuth = new mongoose.Schema({
-    otp:{
-        type:String
-    },
-    email:{
-        type:String,
-        ref:"users"
-    }
-})
+
 
 const googleSchema = new mongoose.Schema({
     fname: {
@@ -68,6 +60,6 @@ const googleSchema = new mongoose.Schema({
     }
 })
 
-export const userOtpSchema = mongoose.model('userResetPassOtp',otpAuth,'otp')
+
 export const userRegisterSchema =  mongoose.model('users',userRegSchema,'users')
 export const userGoogleSchema = mongoose.model('userGoogleReg',googleSchema,'users')
