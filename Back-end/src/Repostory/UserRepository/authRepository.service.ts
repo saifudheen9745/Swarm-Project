@@ -8,8 +8,8 @@ import {
   userRegInterface,
 } from "../../Types/user.types";
 import { compare } from "bcrypt";
-import { userOtpSchema } from "../../Models/UserModels/otpModel";
-import { userGoogleSchema } from "../../Models/UserModels/googleModel";
+import otpModel from "../../Models/UserModels/otpModel";
+import googleModel from "../../Models/UserModels/googleModel";
 import userRegModel from "../../Models/UserModels/userRegModel";
 
 export class authRepository {
@@ -123,13 +123,13 @@ export class authRepository {
 
   async registerGoogleUser({ fname, email }: userGoogleRegInterface) {
     try {
-      const duplicateUser = await userGoogleSchema.find({ email: email });
+      const duplicateUser = await googleModel.find({ email: email });
       if (duplicateUser.length != 0) {
         throw {
           msg: "This email is already registered, Please use another email",
         };
       } else {
-        return await userGoogleSchema.create({ fname, email });
+        return await googleModel.create({ fname, email });
       }
     } catch (error) {
       throw { error };
@@ -150,7 +150,7 @@ export class authRepository {
 
   async saveOtpInDb(otp: string, email: string) {
     try {
-      return await userOtpSchema.create({ otp, email });
+      return await otpModel.create({ otp, email });
     } catch (error) {
       throw { error };
     }
@@ -158,11 +158,11 @@ export class authRepository {
 
   async checkOtp(otp: string) {
     try {
-      const validOtp = await userOtpSchema.find({ otp: otp });
+      const validOtp = await otpModel.find({ otp: otp });
       if (validOtp.length == 0) {
         throw { msg: "Invalid otp" };
       } else {
-        await userOtpSchema.deleteOne({ otp: otp });
+        await otpModel.deleteOne({ otp: otp });
       }
       return validOtp[0]?.otp;
     } catch (error) {

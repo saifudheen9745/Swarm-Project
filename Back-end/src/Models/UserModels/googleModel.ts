@@ -21,4 +21,4 @@ const googleSchema = new mongoose.Schema({
 })
 
 
-export const userGoogleSchema = mongoose.model('userGoogleReg',googleSchema,'users')
+export default mongoose.model('userGoogleReg',googleSchema,'users')

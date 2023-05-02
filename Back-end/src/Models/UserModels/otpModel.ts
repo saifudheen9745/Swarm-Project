@@ -11,4 +11,4 @@ const otpAuth = new mongoose.Schema({
     }
 })
 
-export const userOtpSchema = mongoose.model('userResetPassOtp',otpAuth,'otp')
+export default mongoose.model('userResetPassOtp',otpAuth,'otp')
