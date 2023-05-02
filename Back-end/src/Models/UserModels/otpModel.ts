@@ -7,7 +7,6 @@ const otpAuth = new mongoose.Schema({
     },
     email:{
         type:String,
-        ref:"users"
     }
 })
 
