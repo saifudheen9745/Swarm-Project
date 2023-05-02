@@ -1,13 +1,5 @@
 import mongoose from "mongoose";
+import otpAuth from "./otpAuth";
 
-
-const otpAuth = new mongoose.Schema({
-    otp:{
-        type:String
-    },
-    email:{
-        type:String,
-    }
-})
 
 export default mongoose.model('userResetPassOtp',otpAuth,'otp')
