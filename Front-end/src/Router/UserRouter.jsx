@@ -12,7 +12,7 @@ const ResetPasswordPage = lazy(() => import("../Pages/User/ResetPasswordPage"));
 const TestPage = lazy(() => import("../Pages/User/TestPage"));
 const UserAccountPage = lazy(() => import("../Pages/User/UserAccountPage"));
 const ChatPage = lazy(() => import("../Pages/User/ChatPage"));
-import LogoLoader from "../Components/Loaders/logoLoader";
+import LogoLoader from "../Components/Loaders/LogoLoader";
 import ErrorBoundary from "../Components/ErrorBoundaries/ErrorBoundary";
 
 
