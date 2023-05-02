@@ -1,13 +1,12 @@
-import mongoose from "mongoose";
+import { Schema } from "mongoose";
 
-
-const otpAuth = new mongoose.Schema({
+const otpAuth = new Schema({
     otp:{
         type:String
     },
     email:{
         type:String,
     }
-})
+});
 
-export default otpAuth
+export default otpAuth;
