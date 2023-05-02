@@ -44,16 +44,24 @@ const app = (0, express_1.default)();
 dotenv.config();
 /*---------Middlewares---------------*/
 app.use((0, cookie_parser_1.default)());
-app.use((0, cors_1.default)({ origin: ["*", 'http://localhost:5173'], credentials: true }));
-app.use((0, morgan_1.default)('dev'));
+app.use((0, cors_1.default)({
+    origin: [
+        "*",
+        "http://localhost:5173",
+        "http://swarm-official.online",
+        "https://swarm-official.online",
+    ],
+    credentials: true,
+}));
+app.use((0, morgan_1.default)("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express_1.default.json());
-app.use(express_1.default.static('./src/Public'));
+app.use(express_1.default.static("./src/Public"));
 /*---------Routing Middlewares--------*/
-app.use('/', authRoute_1.default);
-app.use('/project', projectRoute_1.default);
-app.use('/workspace', workspaceRoute_1.default);
-app.use('/task', taskRoute_1.default);
+app.use("/", authRoute_1.default);
+app.use("/project", projectRoute_1.default);
+app.use("/workspace", workspaceRoute_1.default);
+app.use("/task", taskRoute_1.default);
 /*--------Server Running--------------*/
 app.listen(process.env.PORT_NUMBER, () => {
     console.log(`Server started on port ${process.env.PORT_NUMBER}`);
