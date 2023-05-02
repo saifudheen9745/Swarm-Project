@@ -1,7 +1,8 @@
 import mongoose, { Types } from "mongoose";
 import { userWorkspaceSchema } from "../../Models/UserModels/workspaceModel";
 import { workspaceDetailsInterface } from "../../Types/workspace.types";
-import { userRegisterSchema } from "../../Models/UserModels/authModel";
+import userRegModel from "../../Models/UserModels/userRegModel";
+
 
 class workspaceRepository {
   async createNewWorkspaceInDb(workspaceDetails: workspaceDetailsInterface) {
@@ -142,7 +143,7 @@ class workspaceRepository {
   ) {
     try {
       const workspaceObjId = new Types.ObjectId(workspaceId);
-      const user = await userRegisterSchema.findOne({ email: decryptedEmail });
+      const user = await userRegModel.findOne({ email: decryptedEmail });
       const updateSenderWorkspaceDb = await userWorkspaceSchema.updateOne(
         { _id: workspaceId, "members.email": decryptedEmail },
         { $set: { "members.$.status": choise } }

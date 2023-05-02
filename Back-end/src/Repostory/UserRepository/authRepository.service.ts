@@ -1,7 +1,5 @@
 import { Types } from "mongoose";
-import {
-  userRegisterSchema,
-} from "../../Models/UserModels/authModel";
+
 import {
   updatePasswordDetails,
   userGoogleLoginInterface,
@@ -12,18 +10,20 @@ import {
 import { compare } from "bcrypt";
 import { userOtpSchema } from "../../Models/UserModels/otpModel";
 import { userGoogleSchema } from "../../Models/UserModels/googleModel";
+import userRegModel from "../../Models/UserModels/userRegModel";
 
 export class authRepository {
+  
   async registerUser(regDetails: userRegInterface) {
     try {
       let { fname, lname, email, mobile, password } = regDetails;
-      let userRegisteredAlready = await userRegisterSchema.find({
+      let userRegisteredAlready = await userRegModel.find({
         email: email,
       });
       if (userRegisteredAlready.length != 0) {
         throw { msg: "User is already regitered" };
       }
-      return await userRegisterSchema.create({
+      return await userRegModel.create({
         fname,
         lname,
         email,
@@ -38,7 +38,7 @@ export class authRepository {
   async loginUser(reqDetails: userLoginInterface) {
     try {
       const { email, password } = reqDetails;
-      const userFound = await userRegisterSchema.find({
+      const userFound = await userRegModel.find({
         $or: [{ email: { $eq: email } }, { mobile: { $eq: email } }],
       });
       if (userFound.length == 0) throw { msg: "Invalid credentials" };
@@ -60,7 +60,7 @@ export class authRepository {
 
   async loginUserWithNumber(loginDetails: any) {
     try {
-      const userFound = await userRegisterSchema.find({
+      const userFound = await userRegModel.find({
         mobile: loginDetails.mobile,
       });
       if (userFound.length == 0) {
@@ -75,7 +75,7 @@ export class authRepository {
 
   async findUserById(id: string) {
     try {
-      const user: any = await userRegisterSchema.findById({ _id: id });
+      const user: any = await userRegModel.findById({ _id: id });
 
       return user;
     } catch (error: any) {
@@ -90,8 +90,8 @@ export class authRepository {
   async findUserByIdForEmailVerification(id: string) {
     try {
       console.log(id);
-      
-      const user: any = await userRegisterSchema.findById({ _id: id });
+
+      const user: any = await userRegModel.findById({ _id: id });
       console.log("user from comfirm", user);
 
       if (!user) {
@@ -112,7 +112,7 @@ export class authRepository {
 
   async setIsVerifiedTrue(id: string) {
     try {
-      return userRegisterSchema.updateOne(
+      return userRegModel.updateOne(
         { _id: id },
         { $set: { isVerified: true } }
       );
@@ -138,7 +138,7 @@ export class authRepository {
 
   async loginGoogleUser({ email }: userGoogleLoginInterface) {
     try {
-      const user = await userRegisterSchema.find({ email: email });
+      const user = await userRegModel.find({ email: email });
       if (user.length == 0) {
         throw { msg: "Please register with google first" };
       }
@@ -173,7 +173,7 @@ export class authRepository {
   async updatePasswordDb(updatePasswordDetails: updatePasswordDetails) {
     try {
       const { email, password } = updatePasswordDetails;
-      return await userRegisterSchema.updateOne(
+      return await userRegModel.updateOne(
         { email: email },
         { $set: { password: password } }
       );
@@ -184,7 +184,7 @@ export class authRepository {
 
   async findUserByEmail(email: string) {
     try {
-      const user = await userRegisterSchema.find({ email: email });
+      const user = await userRegModel.find({ email: email });
       if (user.length === 0) {
         throw { msg: "Email is not registered" };
       }
@@ -201,7 +201,7 @@ export class authRepository {
     try {
       console.log(number);
 
-      const user = await userRegisterSchema.find({ mobile: number });
+      const user = await userRegModel.find({ mobile: number });
       if (user.length === 0) {
         throw { msg: "Mobile is not registered" };
       } else {
@@ -212,46 +212,50 @@ export class authRepository {
     }
   }
 
-  async getUserDetailsFromDb(userId:string){
+  async getUserDetailsFromDb(userId: string) {
     try {
-      const user = await userRegisterSchema.find({_id:userId})
-      return user?.[0]
+      const user = await userRegModel.find({ _id: userId });
+      return user?.[0];
     } catch (error) {
-      throw{error}
+      throw { error };
     }
   }
 
-  async findUserByMobileOrEmail(identifier:string){
-    try {        
-      
-      return  await userRegisterSchema.findOne({$or: [{ email: identifier }, { mobile: identifier }],});
-    } catch (error) {        
-      throw {error}
-    }
-  }
-
-  async editUserDetailsInDb(userDetails:any){
+  async findUserByMobileOrEmail(identifier: string) {
     try {
+      return await userRegModel.findOne({
+        $or: [{ email: identifier }, { mobile: identifier }],
+      });
+    } catch (error) {
+      throw { error };
+    }
+  }
 
-      return await userRegisterSchema.updateOne(
+  async editUserDetailsInDb(userDetails: any) {
+    try {
+      return await userRegModel.updateOne(
         { _id: userDetails.userId }, // filter for the document to update
-        { $set: { fname:userDetails.fname, email:userDetails.email, mobile:userDetails.mobile } } // update operation to perform
-      )
-      
+        {
+          $set: {
+            fname: userDetails.fname,
+            email: userDetails.email,
+            mobile: userDetails.mobile,
+          },
+        } // update operation to perform
+      );
     } catch (error) {
-      throw{error}
+      throw { error };
     }
   }
 
-  async updateUserPassInDb(passDetails:any){
+  async updateUserPassInDb(passDetails: any) {
     try {
-      return await userRegisterSchema.updateOne(
-        {_id:passDetails.userId},
-        {$set:{password:passDetails.newPass}}
-      )
-      
+      return await userRegModel.updateOne(
+        { _id: passDetails.userId },
+        { $set: { password: passDetails.newPass } }
+      );
     } catch (error) {
-      throw{error}
+      throw { error };
     }
   }
 }
