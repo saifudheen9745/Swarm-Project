@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
 import otpAuth from "./otpAuth";
 
-
-export default mongoose.model('userResetPassOtp',otpAuth,'otp')
+const userOtpSchema = mongoose.model('userResetPassOtp', otpAuth, 'otp');
+export default userOtpSchema;
