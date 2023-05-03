@@ -3,13 +3,13 @@ import * as NodeMailer from 'nodemailer'
 export const sentResetPasswordMail = async(email:string,otp:string) =>{
     try {
         const transporter = NodeMailer.createTransport({
-            host:process.env.HOST,
-            service:process.env.SERVICE,
-            port:Number(process.env.EMAIL_PORT),
-            secure:Boolean(process.env.SECURE),
+            host:"smtp.gmail.com",
+            service:"gmail",
+            port:587,
+            secure:true,
             auth:{
-                user:process.env.USER,
-                pass:process.env.PASS
+                user:"swarm.ofcl@gmail.com",
+                pass:"bykqhoqttloceqbd"
             }
         })
 

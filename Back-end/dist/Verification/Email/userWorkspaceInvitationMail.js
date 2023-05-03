@@ -42,13 +42,13 @@ const { encryptEmail } = (0, crypto_1.default)();
 const sentMail = (email, workspaceId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const transporter = NodeMailer.createTransport({
-            host: process.env.HOST,
-            service: process.env.SERVICE,
-            port: Number(process.env.EMAIL_PORT),
-            secure: Boolean(process.env.SECURE),
+            host: "smtp.gmail.com",
+            service: "gmail",
+            port: 587,
+            secure: true,
             auth: {
-                user: process.env.USER,
-                pass: process.env.PASS
+                user: "swarm.ofcl@gmail.com",
+                pass: "bykqhoqttloceqbd"
             }
         });
         for (let i = 0; i < email.length; i++) {

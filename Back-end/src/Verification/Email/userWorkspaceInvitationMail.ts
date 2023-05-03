@@ -8,14 +8,14 @@ export const sentMail = async(email:any,workspaceId:string) =>{
   
     try {
         const transporter = NodeMailer.createTransport({
-            host:process.env.HOST,
-            service:process.env.SERVICE,
-            port:Number(process.env.EMAIL_PORT),
-            secure:Boolean(process.env.SECURE),
-            auth:{
-                user:process.env.USER,
-                pass:process.env.PASS
-            }
+          host:"smtp.gmail.com",
+          service:"gmail",
+          port:587,
+          secure:true,
+          auth:{
+              user:"swarm.ofcl@gmail.com",
+              pass:"bykqhoqttloceqbd"
+          }
         })
         for(let i= 0 ; i < email.length; i++){
           const encryptedEmail = await encryptEmail(email[i].email)
