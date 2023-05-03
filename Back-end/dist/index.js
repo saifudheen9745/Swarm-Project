@@ -58,6 +58,7 @@ server.use((0, morgan_1.default)("dev"));
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(express_1.default.json());
 server.use(express_1.default.static("./src/Public"));
+server.use('/server', app);
 /*---------Routing Middlewares--------*/
 app.use("/", authRoute_1.default);
 app.use("/project", projectRoute_1.default);

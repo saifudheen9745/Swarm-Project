@@ -35,6 +35,7 @@ server.use(morgan("dev"));
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(express.static("./src/Public"));
+server.use('/server',app)
 
 /*---------Routing Middlewares--------*/
 
@@ -44,6 +45,7 @@ app.use("/workspace", workspaceRoute);
 app.use("/task", taskRoute);
 
 /*--------Server Running--------------*/
+
 
 server.listen(process.env.PORT_NUMBER, () => {
   console.log(`Server started on port ${process.env.PORT_NUMBER}`);
