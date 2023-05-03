@@ -38,13 +38,14 @@ const authRoute_1 = __importDefault(require("./Routes/UserRoutes/authRoute"));
 const projectRoute_1 = __importDefault(require("./Routes/UserRoutes/projectRoute"));
 const workspaceRoute_1 = __importDefault(require("./Routes/UserRoutes/workspaceRoute"));
 const taskRoute_1 = __importDefault(require("./Routes/UserRoutes/taskRoute"));
-const app = (0, express_1.default)();
+const server = (0, express_1.default)();
+const app = express_1.default.Router();
 /*--------DB-Connection-------------*/
 (0, connection_1.ConnectToDatabase)();
 dotenv.config();
 /*---------Middlewares---------------*/
-app.use((0, cookie_parser_1.default)());
-app.use((0, cors_1.default)({
+server.use((0, cookie_parser_1.default)());
+server.use((0, cors_1.default)({
     origin: [
         "*",
         "http://localhost:5173",
@@ -53,17 +54,17 @@ app.use((0, cors_1.default)({
     ],
     credentials: true,
 }));
-app.use((0, morgan_1.default)("dev"));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express_1.default.json());
-app.use(express_1.default.static("./src/Public"));
+server.use((0, morgan_1.default)("dev"));
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(express_1.default.json());
+server.use(express_1.default.static("./src/Public"));
 /*---------Routing Middlewares--------*/
 app.use("/", authRoute_1.default);
 app.use("/project", projectRoute_1.default);
 app.use("/workspace", workspaceRoute_1.default);
 app.use("/task", taskRoute_1.default);
 /*--------Server Running--------------*/
-app.listen(process.env.PORT_NUMBER, () => {
+server.listen(process.env.PORT_NUMBER, () => {
     console.log(`Server started on port ${process.env.PORT_NUMBER}`);
 });
 //# sourceMappingURL=index.js.map

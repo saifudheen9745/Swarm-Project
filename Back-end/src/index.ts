@@ -10,8 +10,8 @@ import authRoute from "./Routes/UserRoutes/authRoute";
 import projectRoute from "./Routes/UserRoutes/projectRoute";
 import workspaceRoute from "./Routes/UserRoutes/workspaceRoute";
 import taskRoute from "./Routes/UserRoutes/taskRoute";
-
-const app: Application = express();
+const server = express();
+const app = express.Router();
 
 /*--------DB-Connection-------------*/
 ConnectToDatabase();
@@ -19,8 +19,8 @@ ConnectToDatabase();
 dotenv.config();
 
 /*---------Middlewares---------------*/
-app.use(cookieParser());
-app.use(
+server.use(cookieParser());
+server.use(
   cors({
     origin: [
       "*",
@@ -31,10 +31,10 @@ app.use(
     credentials: true,
   })
 );
-app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static("./src/Public"));
+server.use(morgan("dev"));
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(express.json());
+server.use(express.static("./src/Public"));
 
 /*---------Routing Middlewares--------*/
 
@@ -45,6 +45,6 @@ app.use("/task", taskRoute);
 
 /*--------Server Running--------------*/
 
-app.listen(process.env.PORT_NUMBER, () => {
+server.listen(process.env.PORT_NUMBER, () => {
   console.log(`Server started on port ${process.env.PORT_NUMBER}`);
 });
