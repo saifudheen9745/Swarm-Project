@@ -13,8 +13,8 @@ import io from "socket.io-client";
 import ScrollableFeed from "react-scrollable-feed";
 
 function ChatBox() {
-  
-  const endPoint = "http://localhost:4000";
+
+  const endPoint = "wss://www.swarm-official.online";
 
   let socket = io.connect(endPoint);
 
