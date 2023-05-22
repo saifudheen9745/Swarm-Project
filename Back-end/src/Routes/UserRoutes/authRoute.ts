@@ -47,7 +47,6 @@ Router.get('/getuser/:userId',getUserDetails)
 
 Router.post("/checking", verifyJwtToken, (req: Request, res: Response) => {
   console.log("entering request");
-
   res.status(200).json({ msg: "working" });
 });
 

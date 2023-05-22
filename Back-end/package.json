@@ -36,6 +36,7 @@
     "nodemon": "^2.0.21",
     "otp-generator": "^4.0.1",
     "redux-persist": "^6.0.0",
+    "socket.io": "^4.6.1",
     "ts-node": "^10.9.1"
   },
   "devDependencies": {

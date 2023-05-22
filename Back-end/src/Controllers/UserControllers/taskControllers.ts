@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { taskHelper } from "../../Helpers/User/taskHelpers";
-const tasks = new taskHelper();
-const { createNewTask,getAllTaskOfAProject,getATaskStatusUpdated,addAComment,getComments,deleteATask } = tasks;
+const { createNewTask,getAllTaskOfAProject,getATaskStatusUpdated,addAComment,getComments,deleteATask } = new taskHelper();
+
 
 //--------adding new task-------------
 export const addNewTask = async (req: Request, res: Response) => {

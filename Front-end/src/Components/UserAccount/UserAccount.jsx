@@ -88,7 +88,7 @@ function UserAccount() {
   return (
     <div className="dark:bg-slate-800 bg-gray-100 lg:p-4 h-screen overflow-y-auto w-full">
       <div className="flex flex-col md:flex-row gap-3 p-5 h-full rounded-3xl md:mx-16 full md:h-5/6 bottom-20 bg-gray-200 dark:bg-slate-800 shadow-2xl">
-        <div className="w-full md:w-1/3 flex items-center flex-col justify-center  md:h-full rounded-2xl bg-gray-200 dark:bg-slate-800 dark:text-white">
+        <div className="hidden md:block w-full md:w-1/3 md:h-full rounded-2xl bg-gray-200 dark:bg-slate-800 dark:text-white">
           <div className="h-2/5 flex items-center"></div>
           <div className="h-3/5 p-3">
             <p className="font-thin text-4xl text-center">
@@ -99,14 +99,14 @@ function UserAccount() {
         <div className="p-5 w-full  md:w-2/3 shadow-xl h-full rounded-2xl dark:bg-slate-800 dark:text-white bg-gray-200">
           <div className="flex  flex-col justify-center items-center gap-3 h-20 md:h-1/4">
             <span>
-              <img className="h-24" src="./Images/LOGO.png" alt="" />
+              <img className="h-12 md:h-24" src="./Images/LOGO.png" alt="" />
             </span>
             <span>
-              <p className="text-3xl">Swarm Account Management</p>
+              <p className="text-lg md:text-3xl">Swarm Account Management</p>
             </span>
           </div>
           {!resetPass && (
-            <form className="md:mt-16" onSubmit={handleUserDetailSubmit}>
+            <form className="mt-16 md:mt-16" onSubmit={handleUserDetailSubmit}>
               <div class="grid md:grid-cols-2 md:gap-6">
                 <div class="relative z-0 w-full mb-6 group">
                   <input
@@ -180,7 +180,7 @@ function UserAccount() {
           )}
 
           {resetPass && (
-            <form className="md:mt-16" onSubmit={handlePassSubmit}>
+            <form className="mt-16 md:mt-16" onSubmit={handlePassSubmit}>
               <div class={` grid md:grid-cols-1 md:gap-6`}>
                 <div class="relative z-0 w-full mb-6 group">
                   <input

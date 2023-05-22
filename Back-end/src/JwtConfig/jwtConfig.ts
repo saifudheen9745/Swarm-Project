@@ -9,7 +9,7 @@ export class jwtOptions {
   // create access token with 30 seconds validity
   createJwtAccessToken = async (user: string) =>
     sign({ user }, process.env.JWT_ACCESS_TOKEN_SECRET as string, {
-      expiresIn: "30s",
+      expiresIn: "15m",
     });
 
   // create confirm email link token with 1 minute validity
@@ -79,7 +79,7 @@ export class jwtOptions {
       if (!user) return "Unauthorized";
       const id: string = user?._id.toString();
       return sign({ id }, process.env.JWT_ACCESS_TOKEN_SECRET as string, {
-        expiresIn: "30s",
+        expiresIn: "15m",
       });
     } catch (error) {
       throw { error };

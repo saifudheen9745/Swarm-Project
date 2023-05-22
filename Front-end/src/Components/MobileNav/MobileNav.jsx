@@ -1,11 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { AiOutlineWechat } from "react-icons/ai";
+import { TbReportAnalytics } from "react-icons/tb";
 function MobileNav() {
+
   const navigate = useNavigate()
   return (
-    <div>
-      <div className="fixed  z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded bottom-0 left-1/2 dark:bg-gray-700 dark:border-gray-600">
+    <div >
+      <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded bottom-0 left-1/2 dark:bg-gray-700 dark:border-gray-600">
         <div className="grid h-full max-w-lg grid-cols-5 mx-auto">
           <button
             onClick={()=>navigate('/home')}
@@ -38,20 +40,7 @@ function MobileNav() {
             type="button"
             className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
           >
-            <svg
-              className="w-6 h-6 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path>
-              <path
-                clipRule="evenodd"
-                fillRule="evenodd"
-                d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-              ></path>
-            </svg>
+            <TbReportAnalytics className="dark:text-gray-400 text-2xl"/>
             <span className="sr-only">Workspace</span>
           </button>
           <div
@@ -94,20 +83,13 @@ function MobileNav() {
             <div className="tooltip-arrow" data-popper-arrow></div>
           </div>
           <button
+          onClick={()=>navigate('/chat')}
             data-tooltip-target="tooltip-settings"
             type="button"
             className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
           >
-            <svg
-              className="w-6 h-6 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z"></path>
-            </svg>
-            <span className="sr-only">Settings</span>
+            <AiOutlineWechat className="dark:text-gray-400 text-4xl"/>
+            <span className="sr-only">Chats</span>
           </button>
           <div
             id="tooltip-settings"
@@ -118,6 +100,7 @@ function MobileNav() {
             <div className="tooltip-arrow" data-popper-arrow></div>
           </div>
           <button
+            onClick={()=>navigate('/account')}
             data-tooltip-target="tooltip-profile"
             type="button"
             className="inline-flex flex-col items-center justify-center px-5  hover:bg-gray-50 dark:hover:bg-gray-800 group"

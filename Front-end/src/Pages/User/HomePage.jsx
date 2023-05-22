@@ -1,10 +1,11 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, {lazy,Suspense, useEffect, useLayoutEffect, useState } from "react";
 import AsideNavbar from "../../Components/AsideComponent/AsideNav";
 import Navbar from "../../Components/Navbar/Navbar";
 import MainSide from "../../Components/MainSide/MainSide";
 import { useSelector } from "react-redux";
 import { userReducer } from "../../Redux/Slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import HomeCmp from "../../Components/HomeComponent/HomeCmp";
 
 
 function HomePage() {
@@ -20,7 +21,7 @@ function HomePage() {
       <AsideNavbar />
       <div className="w-full">
         <Navbar />
-        <MainSide />
+        <HomeCmp />
       </div>
     </div>
   );

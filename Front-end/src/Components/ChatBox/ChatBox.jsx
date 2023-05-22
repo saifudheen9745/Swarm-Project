@@ -1,118 +1,193 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import workspaceApi from "../../Api/workspaceApi";
 import { userReducer } from "../../Redux/Slices/userSlice";
 import { useSelector } from "react-redux";
 import projectApi from "../../Api/projectApi";
+import chatApi from "../../Api/chatApi";
+import { useNavigate } from "react-router-dom";
+import ChatInputBox from "../ChatInputBox/ChatInputBox";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { format } from "date-fns";
+import { asideReducer } from "../../Redux/Slices/asideSlice";
+import io from "socket.io-client";
+import ScrollableFeed from "react-scrollable-feed";
 
 function ChatBox() {
+  
+  const endPoint = "http://localhost:4000";
+
+  let socket = io.connect(endPoint);
+
+  const navigate = useNavigate();
   const { fetchAllProjects } = projectApi();
+  const { getAChat, sentMessage } = chatApi();
   const { getWorkspaces } = workspaceApi();
-  const [showWorkspaces,setShowWorkspaces] = useState(false)
-  const [workspaces, setWorkspaces] = useState();
-  const [projects, setProjects] = useState();
+  const [chat, setChat] = useState(""); //To get details of a single chat
+  const [messages, setMessages] = useState(); //To get details of a single chat
+  const [workspaces, setWorkspaces] = useState(); // Selected workspace
+  const [projects, setProjects] = useState(); //Selected project
+  const [mobileView, setMobileView] = useState(false);
   const { userId, email } = useSelector(userReducer);
+  const { aside } = useSelector(asideReducer);
+  const chatMessagesRef = useRef(null);
+
+  useEffect(() => {
+    getAllWorkspaces();
+  }, []);
+
   const getAllWorkspaces = async () => {
     try {
       const response = await getWorkspaces(userId, email);
-      setWorkspaces(response.data);
+      setWorkspaces([
+        ...response.data.ownedWorkspaces,
+        ...response.data.sharedWorkspaces,
+      ]);
     } catch (error) {
       console.log(error);
     }
   };
-  
-  const handleWorkspaceClick = async (workspaceId) => {
 
+  const handleWorkspaceClick = async (e) => {
     try {
       //const workspace = await getSelectedWorkspace(workspaceId)
-      const projects = await fetchAllProjects(workspaceId);
+      if (e.target.value === "undefined") {
+        return;
+      }
+      const projects = await fetchAllProjects(e.target.value);
       setProjects(projects.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleProjectClick = async(projectId)=>{
-    console.log(projectId);
-  }
+  const handleProjectClick = async (projectId) => {
+    try {
+      const response = await getAChat(projectId);
+      socket.emit("joinChat", response?.data?._id);
+      setChat(response.data);
+      console.log(response.data);
+      setMobileView(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    getAllWorkspaces();
-  }, []);
+    console.log("jjjjjjjj");
+    socket.on("rm", (data) => {
+      console.log(data.sender._id !== userId);
+      if (data.sender._id !== userId) {
+        setChat((prevState) => ({
+          ...prevState,
+          messages: [...prevState.messages, data],
+        }));
+      }
+      //chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    });
+  });
 
 
 
   return (
-    <div className="h-full  overflow-scroll bg-gray-100 dark:bg-slate-800">
-      <div className="h-full flex w-full rounded-3xl">
-        <div className="w-1/4 h-full bg-gray-200 dark:bg-gray-800 ">
-          <div className="flex px-10 pt-8 justify-center items-center">
-            {projects && (
-              <button
-                onClick={()=>setProjects('')}
-                type="button"
-                className=" text-white  w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                Change workspace
-              </button>
-            )}
-            {!projects && <p className="dark:text-white">Choose a Workspace</p>}
-          </div>
-          {!projects && (
-            <div className="px-5 mt-5">
-              {workspaces?.ownedWorkspaces?.map((owned) => {
-                return (
-                  <button
-                    onClick={() => handleWorkspaceClick(owned._id)}
-                    type="button"
-                    class="w-full py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-2xl border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                  >
-                    {owned.name}
-                  </button>
-                );
-              })}
-              {workspaces?.sharedWorkspaces?.map((shared) => {
-                return (
-                  <button
-                    onClick={() => handleWorkspaceClick(shared._id)}
-                    type="button"
-                    class="w-full py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-2xl border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                  >
-                    {shared.name}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-          {
-            <div className="px-5 mt-5">
-              {projects ? projects?.map((project) => {
-                return (
-                <button
-                  onClick={() => handleProjectClick(project._id)}
-                  type="button"
-                  class="w-full py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-2xl border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                >
-                  {project.name}
-                </button>
-                )
-              }):""}
-            </div>
-          }
+    <div className="h-full md:p-3 pb-20 overflow-y-hidden md:flex gap-3 bg-gray-100 dark:bg-slate-800 w-full">
+      <div
+        className={`${
+          mobileView ? "hidden md:block" : "block"
+        } dark:bg-slate-800 h-full md:w-1/4 rounded-md p-2`}
+      >
+        <div className="w-full  dark:shadow-md shadow-2xl shadow-gray-300 rounded-xl flex justify-center items-center h-16">
+          <p className="dark:text-white  text-4xl">Chats</p>
         </div>
-        <div className="w-3/4 h-full flex justify-center pt-5 bg-gray-300 dark:bg-gray-900 ">
-          <div className="shadow-xl rounded-xl  w-[90%] h-[92%] bg-gray-200 dark:bg-gradient-to-b from-gray-900 to-gray-700">
-            <div className="h-[90%] overflow-y-scroll scrollbar-thin px-2 dark:text-white">
-               
-            </div>
-            <div className="h-[10%] flex items-center gap-5 justify-center">
-              <div className="w-[80%]">
-                <input type="text" id="simple-search" class="bg-gray-50  text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5  dark:bg-gray-500  dark:text-white" placeholder="Search" />
-              </div>
-              <div className="flex justify-center items-center">
-                <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2  ">Send</button>
-              </div>
-            </div>
+        <div className="w-full mt-4">
+          <select
+            id="countries"
+            className="bg-gray-50 border-transparent text-gray-900 dark:shadow-sm shadow-lg text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600  dark:text-white"
+            onChange={handleWorkspaceClick}
+          >
+            <option value="undefined">Choose a workpspace</option>
+            {workspaces?.map((workspace) => {
+              return <option value={workspace._id}>{workspace.name}</option>;
+            })}
+          </select>
+        </div>
+        <div className="dark:bg-slate-800 dark:shadow-xl dark:shadow-gray-700 shadow-xl shadow-gray-300 rounded-2xl px-3 w-full mt-4 h-3/4 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-500 ">
+          {projects &&
+            projects.map((project) => {
+              return (
+                <div
+                  key={project._id}
+                  className="hover:transform hover:scale-105 bg-gray-500 dark:hover:bg-gray-700   text-dark border-slate-700  p-3 flex justify-center rounded-md bg-transparent dark:bg-gray-600 text-white hover:cursor-pointer m-2"
+                >
+                  <p
+                    className="text-sm md:text-xl"
+                    onClick={() => handleProjectClick(project._id)}
+                  >
+                    {project.name}
+                  </p>
+                </div>
+              );
+            })}
+        </div>
+      </div>
+      <div
+        className={`w-full md:w-3/4 h-[92%]  shadow-2xl  dark:shadow-gray-700 rounded-md mb-20`}
+      >
+        <div className="w-full dark:bg-slate-800 bg-slate-300 rounded-t-lg hover:cursor-pointer h-16 flex items-center justify-between">
+          <p className="ml-6 text-lg dark:text-white flex justify-center items-center gap-4">
+            <span
+              onClick={() => setMobileView(false)}
+              className="text-2xl md:hidden hover:cursor-pointer"
+            >
+              <IoArrowBackCircleOutline />
+            </span>
+            {chat?.chatName}
+          </p>
+          <p className="mr-5 dark:text-white">dot</p>
+        </div>
+        <hr className="dark:text-white" />
+        <ScrollableFeed forceScroll={true}>
+          <div  className="h-[87%] overflow-y-scroll  scrollbar-thin md:pb-10 pt-3 px-2 ">
+            {chat?.messages?.map((msg) => {
+              return (
+                <div
+                  key={msg._id}
+                  className={`flex ${
+                    msg.sender._id == userId ? "justify-end" : ""
+                  }`}
+                >
+                  <div
+                    className={`rounded block  w-fit md:max-w-[40%]   p-2 mb-10 ${
+                      msg.sender._id == userId
+                        ? "dark:bg-green-900 text-end bg-green-500  "
+                        : "dark:bg-gray-600 bg-gray-400"
+                    }`}
+                  >
+                    {msg.sender._id !== userId && (
+                      <p className="text-sm dark:text-yellow-400 text-yellow-200 font-semibold">
+                        {msg?.sender.fname}
+                      </p>
+                    )}
+                    <p className="max-w-[100%] truncate dark:text-slate-50 text-gray-200  font-semibold">
+                      {msg.message}
+                    </p>
+                    <p className="text-[.80rem] text-end font-semibold dark:text-gray-300">
+                      {format(new Date(msg.createdAt), "h:mm a")}
+                    </p>
+                  </div>
+                            
+                </div>
+              );
+            })}
           </div>
+        </ScrollableFeed>
+        <div
+          className={`${mobileView ? "z-50" : "z-0"} ${
+            aside ? "w-[62%]"  : "w-full md:w-[70.5%]"
+          } absolute md:block bottom-2.5 pt-3 pr-3 bg-white  dark:bg-slate-800`}
+        >
+          <ChatInputBox
+            data={{ chatId: chat?._id, userId, socket, setChat, chat }}
+          />
         </div>
       </div>
     </div>

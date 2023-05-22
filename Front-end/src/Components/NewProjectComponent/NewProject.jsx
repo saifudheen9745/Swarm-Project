@@ -21,7 +21,7 @@ const NewProject = () => {
   const { getWorkspaces ,getSelectedWorkspace } = workspaceApi();
   const { createProject } = projectApi();
   const dark = useSelector(themeReducer);
-  const { userId } = useSelector(userReducer);
+  const { userId, email } = useSelector(userReducer);
   const [toggleName, setToggleName] = useState("workspace");
   const [workspaces, setWorkSpaces] = useState();
   const [selectedWorkspaces, setSelectedWorkSpaces] = useState();
@@ -34,7 +34,7 @@ const NewProject = () => {
     theme: "",
     from: "",
     to: "",
-    members: [],
+    members: [email],
   });
 
   const handleCheckboxClick = (e) => {

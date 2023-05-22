@@ -10,8 +10,14 @@ import authRoute from "./Routes/UserRoutes/authRoute";
 import projectRoute from "./Routes/UserRoutes/projectRoute";
 import workspaceRoute from "./Routes/UserRoutes/workspaceRoute";
 import taskRoute from "./Routes/UserRoutes/taskRoute";
+import chatRoute from "./Routes/UserRoutes/chatRoute"
+import socketConfig from "./Config/socket";
+import { createServer } from "http";
+
+
 const server = express();
 const app = express.Router();
+const httpServer = createServer(server)
 
 /*--------DB-Connection-------------*/
 ConnectToDatabase();
@@ -43,10 +49,13 @@ app.use("/", authRoute);
 app.use("/project", projectRoute);
 app.use("/workspace", workspaceRoute);
 app.use("/task", taskRoute);
+app.use("/chat",chatRoute);
 
 /*--------Server Running--------------*/
 
 
-server.listen(process.env.PORT_NUMBER, () => {
+httpServer.listen(process.env.PORT_NUMBER, () => {
   console.log(`Server started on port ${process.env.PORT_NUMBER}`);
 });
+
+socketConfig(httpServer)

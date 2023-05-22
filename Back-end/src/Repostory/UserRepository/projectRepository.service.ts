@@ -14,12 +14,12 @@ class projectRepository {
         }
       });
 
-
       const projectResponse = await userProjectSchema.create(projectDetails);
       const insertProjectToWorkspace = await userWorkspaceSchema.updateOne(
         { _id: projectDetails.workspace },
         { $push: { projects: projectResponse._id } }
       );
+      
       return projectResponse;
     } catch (error) {
       console.log(error);

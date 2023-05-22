@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 
 import workspaceHelpers from "../../Helpers/User/workspaceHelpers";
-const workspaceOptions = new workspaceHelpers();
 const {
   createNewWorkspace,
   deleteAWorkspace,
@@ -11,7 +10,8 @@ const {
   insertMembers,
   updateDb,
   findOneWorkspace
-} = workspaceOptions;
+} = new workspaceHelpers();
+
 
 import encrypt from "../../encryption/crypto";
 import { jwtOptions } from "../../JwtConfig/jwtConfig";

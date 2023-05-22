@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import MobileNav from "../MobileNav/MobileNav";
 import { resetDetails } from "../../Redux/Slices/userSlice";
 import { useDispatch } from "react-redux";
+import { toggleAside } from "../../Redux/Slices/asideSlice";
 
 const AsideNavbar = () => {
   const dispatch = useDispatch();
@@ -18,13 +19,14 @@ const AsideNavbar = () => {
     { name: "home", link: "/home", icon: MdOutlineDashboard },
     { name: "user", link: "/account", icon: AiOutlineUser },
     { name: "messages", link: "/chat", icon: FiMessageSquare },
-    { name: "Workspace", link: "/workspace", icon: TbReportAnalytics, margin: true },
-    { name: "File Manager", link: "/", icon: FiFolder },
-    { name: "Cart", link: "/", icon: FiShoppingCart },
-    { name: "Saved", link: "/", icon: AiOutlineHeart, margin: true },
-    { name: "Setting", link: "/", icon: RiSettings4Line },
+    {
+      name: "Workspace",
+      link: "/workspace",
+      icon: TbReportAnalytics,
+      margin: true,
+    },
   ];
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleLogout = async () => {
     localStorage.clear();
@@ -45,7 +47,10 @@ const AsideNavbar = () => {
             <HiMenuAlt3
               size={26}
               className="cursor-pointer"
-              onClick={() => setOpen(!open)}
+              onClick={() => {
+                setOpen(!open)
+                dispatch(toggleAside())
+              }}
             />
           </div>
           <div className="mt-4 flex flex-col gap-4 relative">
@@ -80,9 +85,11 @@ const AsideNavbar = () => {
             <div
               onClick={handleLogout}
               className={`hover:text-red-900 group flex items-center text-sm hover:cursor-pointer gap-3.5 font-medium p-2 hover:bg-gray-300 hover:dark:bg-gray-500 rounded-md`}
-              style={{overflow:"hidden"}}
+              style={{ overflow: "hidden" }}
             >
-              <div><AiOutlineLogout className="text-lg"/></div>
+              <div>
+                <AiOutlineLogout className="text-lg" />
+              </div>
               <h2
                 style={{
                   transitionDelay: `100ms`,
