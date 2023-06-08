@@ -18,7 +18,6 @@ const AsideNavbar = () => {
   const menus = [
     { name: "home", link: "/home", icon: MdOutlineDashboard },
     { name: "user", link: "/account", icon: AiOutlineUser },
-    { name: "messages", link: "/chat", icon: FiMessageSquare },
     {
       name: "Workspace",
       link: "/workspace",
